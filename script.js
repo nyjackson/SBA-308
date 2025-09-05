@@ -1,79 +1,79 @@
 // The provided course information.
 const CourseInfo = {
-  id: 451,
-  name: "Introduction to JavaScript",
+    id: 451,
+    name: "Introduction to JavaScript",
 };
 
 // The provided assignment group.
 const AssignmentGroup = {
-  id: 12345,
-  name: "Fundamentals of JavaScript",
-  course_id: 451,
-  group_weight: 25,
-  assignments: [
-    {
-      id: 1,
-      name: "Declare a Variable",
-      due_at: "2023-01-25",
-      points_possible: 50,
-    },
-    {
-      id: 2,
-      name: "Write a Function",
-      due_at: "2023-02-27",
-      points_possible: 150,
-    },
-    {
-      id: 3,
-      name: "Code the World",
-      due_at: "3156-11-15",
-      points_possible: 500,
-    },
-  ],
+    id: 12345,
+    name: "Fundamentals of JavaScript",
+    course_id: 451,
+    group_weight: 25,
+    assignments: [
+        {
+            id: 1,
+            name: "Declare a Variable",
+            due_at: "2023-01-25",
+            points_possible: 50,
+        },
+        {
+            id: 2,
+            name: "Write a Function",
+            due_at: "2023-02-27",
+            points_possible: 150,
+        },
+        {
+            id: 3,
+            name: "Code the World",
+            due_at: "3156-11-15",
+            points_possible: 500,
+        },
+    ],
 };
 
 // The provided learner submission data.
 const LearnerSubmissions = [
-  {
-    learner_id: 125,
-    assignment_id: 1,
-    submission: {
-      submitted_at: "2023-01-25",
-      score: 47,
+    {
+        learner_id: 125,
+        assignment_id: 1,
+        submission: {
+            submitted_at: "2023-01-25",
+            score: 47,
+        },
     },
-  },
-  {
-    learner_id: 125,
-    assignment_id: 2,
-    submission: {
-      submitted_at: "2023-02-12",
-      score: 150,
+    {
+        learner_id: 125,
+        assignment_id: 2,
+        submission: {
+            submitted_at: "2023-02-12",
+            score: 150,
+        },
     },
-  },
-  {
-    learner_id: 125,
-    assignment_id: 3,
-    submission: {
-      submitted_at: "2023-01-25",
-      score: 400,
+    {
+        learner_id: 125,
+        assignment_id: 3,
+        submission: {
+            submitted_at: "2023-01-25",
+            score: 400,
+        },
     },
-  },
-  {
-    learner_id: 132,
-    assignment_id: 1,
-    submission: {
-      submitted_at: "2023-01-24",
-      score: 39,
+    {
+        learner_id: 132,
+        assignment_id: 1,
+        submission: {
+            submitted_at: "2023-01-24",
+            score: 39,
+        },
     },
-  },
-  {
-    learner_id: 132,
-    assignment_id: 2,
-    submission: {
-      submitted_at: "2023-03-07",
-      score: 140,
+    {
+        learner_id: 132,
+        assignment_id: 2,
+        submission: {
+            submitted_at: "2023-03-07",
+            score: 140,
+        },
     },
-  },
 ];
 /***
  *  // the ID of the learner for which this data has been collected
@@ -109,6 +109,36 @@ const LearnerSubmissions = [
 // return result;
 let currDate = "2025-09-05";
 function getLearnerData(course, ag, submissions) {
+    const result = [];
+    let assignmentsAndMax = getAssignments(course.id, ag)
+    let assignments = assignmentsAndMax[0]
+    let maxPoints = assignmentsAndMax[1]
+    
+    return result;
+}
+
+function getAssignments(courseID, ag) { //returns the assignments that was due before the currDate
+    let relevantAsmts = []
+    let maxPoints = 0
+    if (ag.course_id == courseID) {
+        for (let j = 0; j < ag.assignments.length; j++) {
+            if (currDate > ag.assignments[j].due_at) {
+                relevantAsmts.push(ag.assignments[j])
+                maxPoints +=ag.assignments[j].points_possible
+            }
+        }
+        return [relevantAsmts,maxPoints]
+    }
+}
+
+
+    const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+
+//console.log(result);
+
+/****
+ * Code before 3:37p
+ * function getLearnerData(course, ag, submissions) {
   const result = [];
   if (course.id == ag.course_id) {
     // makes sure they are the same course
@@ -126,8 +156,7 @@ function getLearnerData(course, ag, submissions) {
   }
   return result;
 }
-
-function getAllSubmissionsForAsmt(id, totalPoints, dueDate, submissions) {
+ * function getAllSubmissionsForAsmt(id, totalPoints, dueDate, submissions) {
   // access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
   let asmts = [];
   for (let i = 0; i < submissions.length; i++) {
@@ -146,8 +175,5 @@ function getAllSubmissionsForAsmt(id, totalPoints, dueDate, submissions) {
 //  console.log(asmts)
   return asmts;
 } 
-
-
-const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-
-console.log(result);
+ * 
+ */
