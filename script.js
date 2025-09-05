@@ -1,7 +1,7 @@
 // The provided course information.
 const CourseInfo = {
   id: 451,
-  name: "Introduction to JavaScript"
+  name: "Introduction to JavaScript",
 };
 
 // The provided assignment group.
@@ -15,21 +15,21 @@ const AssignmentGroup = {
       id: 1,
       name: "Declare a Variable",
       due_at: "2023-01-25",
-      points_possible: 50
+      points_possible: 50,
     },
     {
       id: 2,
       name: "Write a Function",
       due_at: "2023-02-27",
-      points_possible: 150
+      points_possible: 150,
     },
     {
       id: 3,
       name: "Code the World",
       due_at: "3156-11-15",
-      points_possible: 500
-    }
-  ]
+      points_possible: 500,
+    },
+  ],
 };
 
 // The provided learner submission data.
@@ -39,41 +39,41 @@ const LearnerSubmissions = [
     assignment_id: 1,
     submission: {
       submitted_at: "2023-01-25",
-      score: 47
-    }
+      score: 47,
+    },
   },
   {
     learner_id: 125,
     assignment_id: 2,
     submission: {
       submitted_at: "2023-02-12",
-      score: 150
-    }
+      score: 150,
+    },
   },
   {
     learner_id: 125,
     assignment_id: 3,
     submission: {
       submitted_at: "2023-01-25",
-      score: 400
-    }
+      score: 400,
+    },
   },
   {
     learner_id: 132,
     assignment_id: 1,
     submission: {
       submitted_at: "2023-01-24",
-      score: 39
-    }
+      score: 39,
+    },
   },
   {
     learner_id: 132,
     assignment_id: 2,
     submission: {
       submitted_at: "2023-03-07",
-      score: 140
-    }
-  }
+      score: 140,
+    },
+  },
 ];
 /***
  *  // the ID of the learner for which this data has been collected
@@ -91,7 +91,7 @@ const LearnerSubmissions = [
     // the average or the keyed dictionary of scores
  */
 
-      // here, we would process this data to achieve the desired result.
+// here, we would process this data to achieve the desired result.
 //   const result = [
 //     {
 //       id: 125,
@@ -107,45 +107,67 @@ const LearnerSubmissions = [
 //     }
 //   ];
 // return result;
-let currDate = "2025-09-05"
+let currDate = "2025-09-05";
 function getLearnerData(course, ag, submissions) {
-
   const result = [];
-  if(course.id == ag.course_id){ // makes sure they are the same course
-    let assignments = ag.assignments
-    let resultObj = {}
-    for(let i = 0; i < assignments.length;i++){ // go through each asmt group
-        let asmt = assignments[i]
-        let asmtID = asmt.id
-        let asmtPoints = asmt.points_possible
-        let dueDate = asmt.due_at
-        let allSubmissions = getAllSubmissionsForAsmt(asmtID,dueDate,submissions) // returns an array of obj? including the learner asmt info?
-    //    console.log(`Logging Each Asmt: ${asmtID} ${asmtPoints} ${dueDate}`)
+  if (course.id == ag.course_id) {
+    // makes sure they are the same course
+    let assignments = ag.assignments;
+    for (let i = 0; i < assignments.length; i++) {
+        
+    let resultObj = {};
+      // go through each asmt group
+      let asmt = assignments[i];
+      let asmtID = asmt.id;
+      let asmtPoints = asmt.points_possible;
+      let dueDate = asmt.due_at;
+      let average = 0
+      //let allSubmissions = getAllSubmissionsForAsmt(asmtID,dueDate,submissions) // returns an array of obj? including the learner asmt info?
+      for (let j = 0; j < submissions.length; j++) {
+        let submission = submissions[i];
+        let submissionScore = submission.submission.score;
+        let submissionDate = submission.submission.submitted_at;
+        resultObj.id = submission.learner_id
+        resultObj.avg = 0
+        if (currDate > dueDate && asmtID == submission.assignment_id) {
+           // console.log("first if")
+          if (submissionDate > dueDate) {
+            let newScore = submissionScore - 15;
+            submission.submission.score = newScore;
+          }
+          resultObj[asmtID] = submissionScore/asmtPoints
+          console.log("In Submission For Loop")
+        }
+      }
+      
+        result.push(resultObj)
     }
     // result.push(resultObj)
   }
   // create temp object once filled push to result
+  //console.log(allSubmissions)
   return result;
 }
 
-const getAllSubmissionsForAsmt = function (id,dueDate,submissions){
-// access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
-let asmts = []
-for(let i = 0; i <submissions.length;i++){
-    let submission = submissions[i]
-    let submissionScore = submission.submission.score
-    let submissionDate = submission.submission.submitted_at
-    if(currDate > dueDate && id == submission.assignment_id){
-        if(submissionDate > dueDate){
-            let newScore = submissionScore - 15
-            submission.submission.score = newScore
-        }
-        asmts.push(submission)
+const getAllSubmissionsForAsmt = function (id, dueDate, submissions) {
+  // access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
+  let asmts = [];
+  for (let i = 0; i < submissions.length; i++) {
+    let submission = submissions[i];
+    let submissionScore = submission.submission.score;
+    let submissionDate = submission.submission.submitted_at;
+    if (currDate > dueDate && id == submission.assignment_id) {
+      if (submissionDate > dueDate) {
+        let newScore = submissionScore - 15;
+        submission.submission.score = newScore;
+      }
+      asmts.push(submission);
     }
-}
-return asmts;
-}
+  }
+  console.log(asmts);
+  return asmts;
+}; // not using rn
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
-//console.log(result);
+console.log(result);
