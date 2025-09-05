@@ -91,8 +91,7 @@ const LearnerSubmissions = [
     // the average or the keyed dictionary of scores
  */
 
-function getLearnerData(course, ag, submissions) {
-  // here, we would process this data to achieve the desired result.
+      // here, we would process this data to achieve the desired result.
 //   const result = [
 //     {
 //       id: 125,
@@ -108,9 +107,30 @@ function getLearnerData(course, ag, submissions) {
 //     }
 //   ];
 // return result;
+function getLearnerData(course, ag, submissions) {
+
   const result = [];
-  
+  console.log(course.id + " " + ag.id)
+  if(course.id == ag.course_id){ // makes sure they are the same course
+    let assignments = ag.assignments
+    let resultObj = {}
+    for(let i = 0; i < assignments.length;i++){ // go through each asmt group
+        let asmt = assignments[i]
+        let asmtID = asmt.id
+        let asmtPoints = asmt.points_possible
+        let dueDate = asmt.due_at
+        getAllSubmissionForAsmt(asmtID,asmtPoints,dueDate)
+        console.log(`Logging Each Asmt: ${asmtID} ${asmtPoints} ${dueDate}`)
+    }
+    // result.push(resultObj)
+  }
+  // create temp object once filled push to result
   return result;
+}
+
+const getAllSubmissionForAsmt = function (id,totalPoints, dueDate){
+// access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
+
 }
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
