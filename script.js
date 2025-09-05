@@ -107,7 +107,7 @@ const LearnerSubmissions = [
 //     }
 //   ];
 // return result;
-
+let currDate = "2025-09-05"
 function getLearnerData(course, ag, submissions) {
 
   const result = [];
@@ -119,7 +119,7 @@ function getLearnerData(course, ag, submissions) {
         let asmtID = asmt.id
         let asmtPoints = asmt.points_possible
         let dueDate = asmt.due_at
-        let submissions = getAllSubmissionsForAsmt(asmtID,asmtPoints,dueDate,submissions) // returns an array of obj? including the learner asmt info?
+        let allSubmissions = getAllSubmissionsForAsmt(asmtID,dueDate,submissions) // returns an array of obj? including the learner asmt info?
     //    console.log(`Logging Each Asmt: ${asmtID} ${asmtPoints} ${dueDate}`)
     }
     // result.push(resultObj)
@@ -128,18 +128,22 @@ function getLearnerData(course, ag, submissions) {
   return result;
 }
 
-const getAllSubmissionsForAsmt = function (id,totalPoints, dueDate,submissions){
+const getAllSubmissionsForAsmt = function (id,dueDate,submissions){
 // access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
-let assignments = []
+let asmts = []
 for(let i = 0; i <submissions.length;i++){
     let submission = submissions[i]
     let submissionScore = submission.submission.score
     let submissionDate = submission.submission.submitted_at
-    if(submissionDate >= dueDate  && id == submission.assignment_id){
-        assignments.push(submissions[i])
+    if(currDate > dueDate && id == submission.assignment_id){
+        if(submissionDate > dueDate){
+            let newScore = submissionScore - 15
+            submission.submission.score = newScore
+        }
+        asmts.push(submission)
     }
 }
-console.log(assignments)
+return asmts;
 }
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
