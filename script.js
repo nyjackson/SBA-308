@@ -112,13 +112,16 @@ function getLearnerData(course, ag, submissions) {
     const result = [];
     let assignmentsAndMax = getAssignments(course.id, ag);
     let assignments = assignmentsAndMax[0];
+    //console.log(assignments)
     let maxPoints = assignmentsAndMax[1];
     let learnerObj = {};
     for(let i = 0; i < submissions.length;i++){
         let submission = submissions[i];
-        if(!('id' in learnerObj)) {learnerObj.id = submission.learner_id};
-        !('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
-        console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
+       // if(!('id' in learnerObj)) {learnerObj.id = submission.learner_id};
+        //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
+        // if(submission.assignment_id == ){ }
+        let grade = gradeAsmt(submission,assignments)
+        //console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
 
     }
     return result;
@@ -138,8 +141,33 @@ function getAssignments(courseID, ag) { //returns the assignments that was due b
     }
 }
 
+function gradeAsmt(learnerEntry,asmts){
+    console.log("Learner Entry:" + JSON.stringify(learnerEntry))
+    let scores = [];
+    let learnerSubmission = learnerEntry.submission;
+    for(let i = 0; i< asmts.length; i++){
+        let asmt = asmts[i];
+        let learnerGrade = {}
+        if(asmt.id == learnerEntry.assignment_id){
+            if(learnerSubmission.submitted_at > asmt.due_at){
+                let latePenaltyToScore = learnerSubmission.score - 15
+                learnerSubmission.score = latePenaltyToScore
+            }
+            if (!(asmt.id in learnerGrade)) {
+                learnerGrade[asmt.id] = learnerSubmission.score/asmt.points_possible 
+            }
+            if (!('id' in learnerGrade)) {
+                learnerGrade['id'] = learnerSubmission.learner_id
+            }
+            scores.push(learnerGrade)
 
-    const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+        }
+    }   
+    console.log(scores)
+    return scores;
+}
+
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
 //console.log(result);
 
