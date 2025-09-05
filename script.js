@@ -110,24 +110,31 @@ const LearnerSubmissions = [
 let currDate = "2025-09-05";
 function getLearnerData(course, ag, submissions) {
     const result = [];
-    let assignmentsAndMax = getAssignments(course.id, ag)
-    let assignments = assignmentsAndMax[0]
-    let maxPoints = assignmentsAndMax[1]
-    
+    let assignmentsAndMax = getAssignments(course.id, ag);
+    let assignments = assignmentsAndMax[0];
+    let maxPoints = assignmentsAndMax[1];
+    let learnerObj = {};
+    for(let i = 0; i < submissions.length;i++){
+        let submission = submissions[i];
+        if(!('id' in learnerObj)) {learnerObj.id = submission.learner_id};
+        !('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
+        console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
+
+    }
     return result;
 }
 
 function getAssignments(courseID, ag) { //returns the assignments that was due before the currDate
-    let relevantAsmts = []
-    let maxPoints = 0
+    let relevantAsmts = [];
+    let maxPoints = 0;
     if (ag.course_id == courseID) {
         for (let j = 0; j < ag.assignments.length; j++) {
             if (currDate > ag.assignments[j].due_at) {
-                relevantAsmts.push(ag.assignments[j])
-                maxPoints +=ag.assignments[j].points_possible
+                relevantAsmts.push(ag.assignments[j]);
+                maxPoints +=ag.assignments[j].points_possible;
             }
         }
-        return [relevantAsmts,maxPoints]
+        return [relevantAsmts,maxPoints];
     }
 }
 
