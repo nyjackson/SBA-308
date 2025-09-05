@@ -113,43 +113,21 @@ function getLearnerData(course, ag, submissions) {
   if (course.id == ag.course_id) {
     // makes sure they are the same course
     let assignments = ag.assignments;
-    for (let i = 0; i < assignments.length; i++) {
-        
-    let resultObj = {};
-      // go through each asmt group
+    for (let i = 0; i < assignments.length; i++) { // get all assignments from that group, for each asmt
       let asmt = assignments[i];
       let asmtID = asmt.id;
       let asmtPoints = asmt.points_possible;
       let dueDate = asmt.due_at;
-      let average = 0
-      //let allSubmissions = getAllSubmissionsForAsmt(asmtID,dueDate,submissions) // returns an array of obj? including the learner asmt info?
-      for (let j = 0; j < submissions.length; j++) {
-        let submission = submissions[i];
-        let submissionScore = submission.submission.score;
-        let submissionDate = submission.submission.submitted_at;
-        resultObj.id = submission.learner_id
-        resultObj.avg = 0
-        if (currDate > dueDate && asmtID == submission.assignment_id) {
-           // console.log("first if")
-          if (submissionDate > dueDate) {
-            let newScore = submissionScore - 15;
-            submission.submission.score = newScore;
-          }
-          resultObj[asmtID] = submissionScore/asmtPoints
-          console.log("In Submission For Loop")
-        }
-      }
-      
-        result.push(resultObj)
+      let allSubmissions = getAllSubmissionsForAsmt(asmtID, asmtPoints,dueDate,submissions) // returns an array of obj? including the learner asmt info? grouped by asmt id
+
+     //console.log(allSubmissions)
+     //result.push(resultObj)
     }
-    // result.push(resultObj)
   }
-  // create temp object once filled push to result
-  //console.log(allSubmissions)
   return result;
 }
 
-const getAllSubmissionsForAsmt = function (id, dueDate, submissions) {
+function getAllSubmissionsForAsmt(id, totalPoints, dueDate, submissions) {
   // access each learner and when the asmt id is the same, record the info and returnlearner id and score, also check date
   let asmts = [];
   for (let i = 0; i < submissions.length; i++) {
@@ -160,13 +138,15 @@ const getAllSubmissionsForAsmt = function (id, dueDate, submissions) {
       if (submissionDate > dueDate) {
         let newScore = submissionScore - 15;
         submission.submission.score = newScore;
+        submissionScore = submission.submission.score;
       }
-      asmts.push(submission);
+      asmts.push(submission)
     }
   }
-  console.log(asmts);
+//  console.log(asmts)
   return asmts;
-}; // not using rn
+} 
+
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
