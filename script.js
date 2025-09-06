@@ -107,6 +107,7 @@ const LearnerSubmissions = [
 //     }
 //   ];
 // return result;
+
 let currDate = "2025-09-05";
 function getLearnerData(course, ag, submissions) {
   const result = [];
@@ -121,9 +122,13 @@ function getLearnerData(course, ag, submissions) {
     //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
     // if(submission.assignment_id == ){ }
     let grade = gradeAsmt(submission, assignments);
-    console.log(grade)
+    //console.log(grade)
+    //Object.assign(grade, learnerObj)
+    console.log(learnerObj)  
     
+    //if (submission.learner_id == grade.id){}
     //console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
+
   }
   return result;
 }
