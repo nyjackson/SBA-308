@@ -113,18 +113,17 @@ function getLearnerData(course, ag, submissions) {
   const result = [];
   let assignmentsAndMax = getAssignments(course.id, ag);
   let assignments = assignmentsAndMax[0];
-  console.log(assignments);
+  //console.log(assignments);
   let maxPoints = assignmentsAndMax[1];
   let learnerObj = {}; //submissionObj instead?
   for (let i = 0; i < submissions.length; i++) {
     let submission = submissions[i];
-    console.log(`Submission ${i} is ${JSON.stringify(submission)}`)
+    //console.log(`Submission ${i} is ${JSON.stringify(submission)}`)
+
     if (!("id" in learnerObj)) {
       learnerObj.id = submission.learner_id;
-    }else if(learnerObj.id !== submission.learner_id){
-      result.push(learnerObj);
-      learnerObj = {}
-      learnerObj.id = submission.learner_id;
+    } else if (learnerObj.id !== submission.learner_id) {
+      learnerObj = {};
     }
     //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
     // if(submission.assignment_id == ){ }
@@ -132,12 +131,12 @@ function getLearnerData(course, ag, submissions) {
     if (submission.assignment_id == grade[0]) {
       learnerObj[grade[0]] = grade[1];
     }
-    result.push(learnerObj);
-
-    //if (submission.learner_id == grade.id){}
-    //console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
+    if (!result.includes(learnerObj)) {
+      //if the student already exists in result then ignore
+      result.push(learnerObj);
+    }
   }
-  console.log(result);
+
   return result;
 }
 
@@ -178,16 +177,16 @@ function gradeAsmt(learnerEntry, asmts) {
       learnerGrade.push(
         (learnerSubmission.score / asmt.points_possible).toFixed(2)
       );
-      learnerGrade.push(learnerEntry.learner_id)
     }
   }
   console.log(learnerGrade)
   return learnerGrade;
 }
 
+
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
-//console.log(result);
+console.log(result);
 
 /****
  * Code before 3:37p
