@@ -115,15 +115,14 @@ function getLearnerData(course, ag, submissions) {
   let assignments = assignmentsAndMax[0];
   //console.log(assignments)
   let maxPoints = assignmentsAndMax[1];
-  let learnerObj = {};
+  let learnerObj = {}; //submissionObj instead?
   for (let i = 0; i < submissions.length; i++) {
     let submission = submissions[i];
     if(!('id' in learnerObj)) {learnerObj.id = submission.learner_id};
     //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
     // if(submission.assignment_id == ){ }
-    let grade = gradeAsmt(submission, assignments);
-    //console.log(grade)
-    //Object.assign(grade, learnerObj)
+    let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
+    learnerObj[submission.assignment_id] = grade
     console.log(learnerObj)  
     
     //if (submission.learner_id == grade.id){}
@@ -151,7 +150,8 @@ function getAssignments(courseID, ag) {
 function gradeAsmt(learnerEntry, asmts) {
 //  console.log("Learner Entry:" + JSON.stringify(learnerEntry));
 
-  let learnerGrade = {};
+  //let learnerGrade = {};
+  let learnerGrade = 0
   let learnerSubmission = learnerEntry.submission;
   for (let i = 0; i < asmts.length; i++) {
     let asmt = asmts[i];
@@ -160,12 +160,13 @@ function gradeAsmt(learnerEntry, asmts) {
         let latePenaltyToScore = learnerSubmission.score - 15;
         learnerSubmission.score = latePenaltyToScore;
       }
-      if (!(asmt.id in learnerGrade)) {
-        learnerGrade[asmt.id] = learnerSubmission.score / asmt.points_possible;
-      }
-      if (!("id" in learnerGrade)) {
-        learnerGrade["id"] = learnerEntry.learner_id;
-      }
+      // if (!(asmt.id in learnerGrade)) {
+      //   learnerGrade[asmt.id] = learnerSubmission.score / asmt.points_possible;
+      // }
+      // if (!("id" in learnerGrade)) {
+      //   learnerGrade["id"] = learnerEntry.learner_id;
+      // }
+      learnerGrade = learnerSubmission.score / asmt.points_possible;
     }
   }
   return learnerGrade;

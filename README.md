@@ -21,6 +21,7 @@ Returns an array of objects containing each learners id, average, and assignment
 ### getAssignments() ###
 **Parameters:** course.id, ag
 **Arguments:** courseID, ag
+
 Given the course id and the assignment group, this function returns the relevant courses from the group and the maxiumum amount of points 
 
 ---
