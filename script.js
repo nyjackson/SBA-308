@@ -76,6 +76,85 @@ const LearnerSubmissions = [
   },
 ];
 
+//Altered/Edge Cases and Testing Data
+
+const alteredCourseInfo = {
+  id: 451,
+  name: "Introduction to JavaScript",
+};
+
+// The provided assignment group.
+const alteredAssignmentGroup = {
+  id: 12345,
+  name: "Fundamentals of JavaScript",
+  course_id: 451,
+  group_weight: 25,
+  assignments: [
+    {
+      id: 1,
+      name: "Declare a Variable",
+      due_at: "2023-01-25",
+      points_possible: 50,
+    },
+    {
+      id: 2,
+      name: "Write a Function",
+      due_at: "2023-02-27",
+      points_possible: 150,
+    },
+    {
+      id: 3,
+      name: "Code the World",
+      due_at: "2023-02-27",
+      points_possible: 500,
+    },
+  ],
+};
+
+// The provided learner submission data.
+const alteredLearnerSubmissions = [
+  {
+    learner_id: 125,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 47,
+    },
+  },
+  {
+    learner_id: 125,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-02-12",
+      score: 150,
+    },
+  },
+  {
+    learner_id: 125,
+    assignment_id: 3,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 400,
+    },
+  },
+  {
+    learner_id: 132,
+    assignment_id: 1,
+    submission: {
+      submitted_at: "2023-01-24",
+      score: 39,
+    },
+  },
+  {
+    learner_id: 132,
+    assignment_id: 2,
+    submission: {
+      submitted_at: "2023-03-07",
+      score: 140,
+    },
+  },
+];
+
 /***
  *  // the ID of the learner for which this data has been collected
     "id": number,
@@ -115,6 +194,7 @@ function getLearnerData(course, ag, submissions) {
   const result = [];
   try {
     let assignmentsAndMax = getAssignments(course.id, ag);
+    if(typeof assignmentsAndMax == "string"){return assignmentsAndMax}
     let assignments = assignmentsAndMax[0];
     let maxPoints = assignmentsAndMax[1];
     let learnerObj = {}; //submissionObj instead?
@@ -143,7 +223,7 @@ function getLearnerData(course, ag, submissions) {
 
     result.forEach((entry) => {
       let newAvg = entry.avg;
-      entry.avg = newAvg / maxPoints;
+      entry.avg = (newAvg / maxPoints).toFixed(2);
     });
   } catch (error) {
     console.error(error);
@@ -165,6 +245,9 @@ function getAssignments(courseID, ag) {
       }
     }
     return [relevantAsmts, maxPoints];
+  }
+  else{
+    return "No matching course. Unable to start process."
   }
 }
 
@@ -191,5 +274,6 @@ function gradeAsmt(learnerEntry, asmts) {
 }
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-
+const alteredResult = getLearnerData(alteredCourseInfo, alteredAssignmentGroup, alteredLearnerSubmissions);
 console.log(result);
+console.log(alteredResult);
