@@ -16,7 +16,7 @@ SBA-308 demonstrates my understanding of JavaScript fundamentals.
 
 ## Functions: Definitions & Usage ##
 
-### getLearnerData(course, assignmentGroup, submissions)###
+### getLearnerData(course, assignmentGroup, submissions) ###
 Returns an array of objects containing each learners id, average, and assignment scores. 
 
 Calls getAssignments and returns the needed assignments from the assignment group and the maximum amount of points from those assignments.
