@@ -113,12 +113,17 @@ function getLearnerData(course, ag, submissions) {
   const result = [];
   let assignmentsAndMax = getAssignments(course.id, ag);
   let assignments = assignmentsAndMax[0];
-  console.log(assignments)
+  console.log(assignments);
   let maxPoints = assignmentsAndMax[1];
   let learnerObj = {}; //submissionObj instead?
   for (let i = 0; i < submissions.length; i++) {
     let submission = submissions[i];
+    console.log(`Submission ${i} is ${JSON.stringify(submission)}`)
     if (!("id" in learnerObj)) {
+      learnerObj.id = submission.learner_id;
+    }else if(learnerObj.id !== submission.learner_id){
+      result.push(learnerObj);
+      learnerObj = {}
       learnerObj.id = submission.learner_id;
     }
     //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
@@ -126,8 +131,8 @@ function getLearnerData(course, ag, submissions) {
     let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
     if (submission.assignment_id == grade[0]) {
       learnerObj[grade[0]] = grade[1];
-      result.push(learnerObj);
     }
+    result.push(learnerObj);
 
     //if (submission.learner_id == grade.id){}
     //console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
@@ -169,10 +174,14 @@ function gradeAsmt(learnerEntry, asmts) {
       // if (!("id" in learnerGrade)) {
       //   learnerGrade["id"] = learnerEntry.learner_id;
       // }\
-      learnerGrade.push(asmt.id)
-      learnerGrade.push((learnerSubmission.score / asmt.points_possible).toFixed(2));
+      learnerGrade.push(asmt.id);
+      learnerGrade.push(
+        (learnerSubmission.score / asmt.points_possible).toFixed(2)
+      );
+      learnerGrade.push(learnerEntry.learner_id)
     }
   }
+  console.log(learnerGrade)
   return learnerGrade;
 }
 
