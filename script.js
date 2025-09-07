@@ -239,7 +239,10 @@ function getAssignments(courseID, ag) {
   let correctCourse = ag.course_id == courseID;
   if (correctCourse) {
     for (let j = 0; j < ag.assignments.length; j++) {
-      if (currDate > ag.assignments[j].due_at && ag.assignments[j].points_possible !== 0) {
+      if(ag.assignments[j].points_possible == 0){
+        continue;
+      }
+      if (currDate > ag.assignments[j].due_at) {
         relevantAsmts.push(ag.assignments[j]);
         maxPoints += ag.assignments[j].points_possible;
       }
