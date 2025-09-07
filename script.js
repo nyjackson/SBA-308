@@ -113,35 +113,41 @@ const currDate = "2025-09-05";
 
 function getLearnerData(course, ag, submissions) {
   const result = [];
-  let assignmentsAndMax = getAssignments(course.id, ag);
-  let assignments = assignmentsAndMax[0];
-  let maxPoints = assignmentsAndMax[1];
-  let learnerObj = {}; //submissionObj instead?
-  for (let i = 0; i < submissions.length; i++) {
-    let submission = submissions[i];
+  try {
+    let assignmentsAndMax = getAssignments(course.id, ag);
+    let assignments = assignmentsAndMax[0];
+    let maxPoints = assignmentsAndMax[1];
+    let learnerObj = {}; //submissionObj instead?
+    for (let i = 0; i < submissions.length; i++) {
+      let submission = submissions[i];
 
-    if (!("id" in learnerObj)) {
-      learnerObj.id = submission.learner_id;
-    } else if (learnerObj.id !== submission.learner_id) {
-      learnerObj = {};
+      if (!("id" in learnerObj)) {
+        learnerObj.id = submission.learner_id;
+      } else if (learnerObj.id !== submission.learner_id) {
+        learnerObj = {};
+      }
+
+      let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
+      if (submission.assignment_id == grade[0]) {
+        learnerObj[grade[0]] = grade[1];
+        !("avg" in learnerObj)
+          ? (learnerObj.avg = parseInt(grade[2]))
+          : (learnerObj.avg += parseInt(grade[2]));
+      }
+
+      if (!result.includes(learnerObj)) {
+        //if the student already exists in result then ignore
+        result.push(learnerObj);
+      }
     }
 
-    let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
-    if (submission.assignment_id == grade[0]) {
-      learnerObj[grade[0]] = grade[1];
-      !('avg' in learnerObj) ? learnerObj.avg = parseInt(grade[2]):learnerObj.avg += parseInt(grade[2]);
-    }
-
-    if (!result.includes(learnerObj)) {
-      //if the student already exists in result then ignore
-      result.push(learnerObj);
-    }
+    result.forEach((entry) => {
+      let newAvg = entry.avg;
+      entry.avg = newAvg / maxPoints;
+    });
+  } catch (error) {
+    console.error(error);
   }
-
-  result.forEach(entry => {
-    let newAvg = entry.avg
-    entry.avg = newAvg/maxPoints
-  });
 
   return result;
 }
@@ -150,10 +156,10 @@ function getAssignments(courseID, ag) {
   //returns the assignments that was due before the currDate
   let relevantAsmts = [];
   let maxPoints = 0;
-  let correctCourse = ag.course_id == courseID
+  let correctCourse = ag.course_id == courseID;
   if (correctCourse) {
     for (let j = 0; j < ag.assignments.length; j++) {
-      if (currDate > ag.assignments[j].due_at) {
+      if (currDate > ag.assignments[j].due_at && ag.assignments[j].points_possible !== 0) {
         relevantAsmts.push(ag.assignments[j]);
         maxPoints += ag.assignments[j].points_possible;
       }
@@ -163,7 +169,6 @@ function getAssignments(courseID, ag) {
 }
 
 function gradeAsmt(learnerEntry, asmts) {
-
   let learnerGrade = [];
   let learnerSubmission = learnerEntry.submission;
   for (let i = 0; i < asmts.length; i++) {
@@ -175,15 +180,15 @@ function gradeAsmt(learnerEntry, asmts) {
       }
 
       learnerGrade.push(asmt.id);
-      learnerGrade.push((learnerSubmission.score / asmt.points_possible).toFixed(2));
-      learnerGrade.push(learnerSubmission.score)
-      
+      learnerGrade.push(
+        (learnerSubmission.score / asmt.points_possible).toFixed(2)
+      );
+      learnerGrade.push(learnerSubmission.score);
     }
   }
 
   return learnerGrade;
 }
-
 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 
