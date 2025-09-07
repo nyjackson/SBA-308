@@ -10,9 +10,9 @@ SBA-308 demonstrates my understanding of JavaScript fundamentals.
 2. Open index.html in your web browser
 3. Right click on the page and select 'Inspect' then 'Console' to open the JS console.
 
-## Usage & Resource Links ##
+## Resource Links ##
 
-- Starter Code from CodeSandbox.io
+- Starter Code from [CodeSandbox.io](https://codesandbox.io/p/sandbox/sba-308-example-26sg4j)
 
 ## Functions: Definitions & Usage ##
 
