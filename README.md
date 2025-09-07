@@ -15,7 +15,7 @@ SBA-308 demonstrates my understanding of JavaScript fundamentals.
 - Starter Code from CodeSandbox.io
 
 ## Functions: Definitions & Usage ##
-### getLearnerData()###
+### getLearnerData() ###
 Returns an array of objects containing each learners id, average, and assignment scores. 
 
 ### getAssignments() ###

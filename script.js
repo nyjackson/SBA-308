@@ -113,22 +113,26 @@ function getLearnerData(course, ag, submissions) {
   const result = [];
   let assignmentsAndMax = getAssignments(course.id, ag);
   let assignments = assignmentsAndMax[0];
-  //console.log(assignments)
+  console.log(assignments)
   let maxPoints = assignmentsAndMax[1];
   let learnerObj = {}; //submissionObj instead?
   for (let i = 0; i < submissions.length; i++) {
     let submission = submissions[i];
-    if(!('id' in learnerObj)) {learnerObj.id = submission.learner_id};
+    if (!("id" in learnerObj)) {
+      learnerObj.id = submission.learner_id;
+    }
     //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
     // if(submission.assignment_id == ){ }
     let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
-    learnerObj[submission.assignment_id] = grade
-    console.log(learnerObj)  
-    
+    if (submission.assignment_id == grade[0]) {
+      learnerObj[grade[0]] = grade[1];
+      result.push(learnerObj);
+    }
+
     //if (submission.learner_id == grade.id){}
     //console.log(JSON.stringify(submission) + " " + JSON.stringify(learnerObj))
-
   }
+  console.log(result);
   return result;
 }
 
@@ -148,10 +152,9 @@ function getAssignments(courseID, ag) {
 }
 
 function gradeAsmt(learnerEntry, asmts) {
-//  console.log("Learner Entry:" + JSON.stringify(learnerEntry));
-
+  //  console.log("Learner Entry:" + JSON.stringify(learnerEntry));
   //let learnerGrade = {};
-  let learnerGrade = 0
+  let learnerGrade = [];
   let learnerSubmission = learnerEntry.submission;
   for (let i = 0; i < asmts.length; i++) {
     let asmt = asmts[i];
@@ -165,8 +168,9 @@ function gradeAsmt(learnerEntry, asmts) {
       // }
       // if (!("id" in learnerGrade)) {
       //   learnerGrade["id"] = learnerEntry.learner_id;
-      // }
-      learnerGrade = learnerSubmission.score / asmt.points_possible;
+      // }\
+      learnerGrade.push(asmt.id)
+      learnerGrade.push((learnerSubmission.score / asmt.points_possible).toFixed(2));
     }
   }
   return learnerGrade;
