@@ -175,7 +175,7 @@ function gradeAsmt(learnerEntry, asmts) {
     let asmt = asmts[i];
     if (asmt.id == learnerEntry.assignment_id) {
       if (learnerSubmission.submitted_at > asmt.due_at) {
-        let latePenaltyToScore = learnerSubmission.score - 15;
+        let latePenaltyToScore = learnerSubmission.score - (.1 * asmt.points_possible);
         learnerSubmission.score = latePenaltyToScore;
       }
 
