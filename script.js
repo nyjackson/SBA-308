@@ -123,20 +123,26 @@ function getLearnerData(course, ag, submissions) {
     if (!("id" in learnerObj)) {
       learnerObj.id = submission.learner_id;
     } else if (learnerObj.id !== submission.learner_id) {
+
       learnerObj = {};
     }
-    //!('avg' in learnerObj) ? learnerObj.avg = submission.submission.score: learnerObj.avg+=submission.submission.score;
     // if(submission.assignment_id == ){ }
     let grade = gradeAsmt(submission, assignments); // based on this submission, compare to the assignments and grade it accordingly
     if (submission.assignment_id == grade[0]) {
       learnerObj[grade[0]] = grade[1];
+      !('avg' in learnerObj) ? learnerObj.avg = parseInt(grade[2]): learnerObj.avg += parseInt(grade[2]);
     }
+
     if (!result.includes(learnerObj)) {
       //if the student already exists in result then ignore
       result.push(learnerObj);
     }
   }
-
+  result.forEach(entry => {
+    let newAvg = entry.avg
+    entry.avg = newAvg/maxPoints
+  });
+  
   return result;
 }
 
@@ -174,9 +180,9 @@ function gradeAsmt(learnerEntry, asmts) {
       //   learnerGrade["id"] = learnerEntry.learner_id;
       // }\
       learnerGrade.push(asmt.id);
-      learnerGrade.push(
-        (learnerSubmission.score / asmt.points_possible).toFixed(2)
-      );
+      learnerGrade.push((learnerSubmission.score / asmt.points_possible).toFixed(2));
+      learnerGrade.push(learnerSubmission.score)
+      
     }
   }
   console.log(learnerGrade)
