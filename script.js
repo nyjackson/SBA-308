@@ -205,7 +205,7 @@ function getLearnerData(course, ag, submissions) {
     if(typeof assignmentsAndMax == "string"){return assignmentsAndMax}
     let assignments = assignmentsAndMax[0];
     let maxPoints = assignmentsAndMax[1];
-    let learnerObj = {}; //submissionObj instead?
+    let learnerObj = {}; 
     for (let i = 0; i < submissions.length; i++) {
       let submission = submissions[i];
 
@@ -231,7 +231,7 @@ function getLearnerData(course, ag, submissions) {
 
     result.forEach((entry) => {
       let newAvg = entry.avg;
-      entry.avg = (newAvg / maxPoints).toFixed(2);
+      entry.avg = (newAvg / maxPoints).toFixed(3);
     });
   } catch (error) {
     console.error(error);
@@ -263,8 +263,8 @@ function getAssignments(courseID, ag) {
 }
 
 function gradeAsmt(learnerEntry, asmts) {
-  let learnerGrade = [];
-  let learnerSubmission = learnerEntry.submission;
+  const learnerGrade = [];
+  const learnerSubmission = learnerEntry.submission;
   for (let i = 0; i < asmts.length; i++) {
     let asmt = asmts[i];
     if (asmt.id == learnerEntry.assignment_id) {
