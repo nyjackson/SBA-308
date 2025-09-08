@@ -83,7 +83,7 @@ const alteredCourseInfo = {
   name: "Introduction to JavaScript",
 };
 
-// The provided assignment group.
+// The altered assignment group.
 const alteredAssignmentGroup = {
   id: 12345,
   name: "Fundamentals of JavaScript",
@@ -111,7 +111,7 @@ const alteredAssignmentGroup = {
   ],
 };
 
-// The provided learner submission data.
+// The altered learner submission data.
 const alteredLearnerSubmissions = [
   {
     learner_id: 125,
