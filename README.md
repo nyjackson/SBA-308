@@ -15,6 +15,7 @@ SBA-308 demonstrates my understanding of JavaScript fundamentals.
 - Starter Code from [CodeSandbox.io](https://codesandbox.io/p/sandbox/sba-308-example-26sg4j)
 
 ## Functions: Definitions & Usage ##
+All functions are in script.js
 
 ### getLearnerData(course, assignmentGroup, submissions) ###
 Returns an array of objects containing each learners id, average, and assignment scores. 
