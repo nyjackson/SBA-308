@@ -43,7 +43,6 @@ Goes through each submission and compares it against the assignments from getAss
 Returns an array with all the learners and their relevant information.
 
 
-
 ### getAssignments(courseID, assignmentGroup) ###
 
 Given the course ID and the assignment group, this function returns the relevant assignments from the group and the maximum amount of points for all the assignments. 

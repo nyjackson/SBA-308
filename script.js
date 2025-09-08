@@ -268,7 +268,7 @@ function gradeAsmt(learnerEntry, asmts) {
   for (let i = 0; i < asmts.length; i++) {
     let asmt = asmts[i];
     if (asmt.id == learnerEntry.assignment_id) {
-      if (learnerSubmission.submitted_at > asmt.due_at) {
+      if (learnerSubmission.submitted_at > asmt.due_at) { //if assignment submitted late, deduct 10% of the total possible score.
         let latePenaltyToScore = learnerSubmission.score - (.1 * asmt.points_possible);
         learnerSubmission.score = latePenaltyToScore;
       }
@@ -283,8 +283,12 @@ function gradeAsmt(learnerEntry, asmts) {
 
   return learnerGrade;
 }
-
+// Solution
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-const alteredResult = getLearnerData(alteredCourseInfo, alteredAssignmentGroup, alteredLearnerSubmissions);
+console.log("Results of getLearnerData with the original data:")
 console.log(result);
+
+// Edge Case + Error Handling Testing
+const alteredResult = getLearnerData(alteredCourseInfo, alteredAssignmentGroup, alteredLearnerSubmissions);
+console.log("Results of getLearnerData with altered/error prone data:")
 console.log(alteredResult);
