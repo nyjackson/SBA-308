@@ -1,9 +1,15 @@
 # Skill-Based Assessment for Module 308 #
 
-
 ## Purpose ##
 
-SBA-308 demonstrates my understanding of JavaScript fundamentals. 
+SBA-308 demonstrates my understanding of JavaScript fundamentals by showcasing the following:
+
+- Employ basic JavaScript syntax accurately.
+- Implement control flow structures such as conditionals and loops effectively.
+- Use arrays and objects to organize and manage data.
+- Develop functions to create reusable code.
+- Utilize loops and iteration to navigate through data collections.
+- Implement error handling to manage potential code failures gracefully.
 
 ## Installation/Access ##
 
@@ -11,7 +17,7 @@ SBA-308 demonstrates my understanding of JavaScript fundamentals.
 
 2. Open index.html in your web browser
 
-3. Right-click on the page and select 'Inspect', then 'Console' to open the JS console.
+3. Right-click on the page and select 'Inspect', then 'Console' to open the JS console and view results.
 
 
 ## Resource Links ##
@@ -29,7 +35,6 @@ Returns an array of objects containing each learner's ID, average, and assignmen
 
 
 Calls getAssignments and returns the necessary assignments from the assignment group, along with the maximum amount of points from those assignments.
-
 
 
 Goes through each submission and compares it against the assignments from getAssignments(). Adds the following relevant information to a temporary object, which is then pushed to the result array:
