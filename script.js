@@ -105,7 +105,7 @@ const alteredAssignmentGroup = {
     {
       id: 3,
       name: "Code the World",
-      due_at: "3023-02-27",
+      due_at: "2023-06-27",
       points_possible: 500,
     },
   ],
@@ -153,6 +153,14 @@ const alteredLearnerSubmissions = [
       score: 140,
     },
   },
+  {
+    learner_id: 132,
+    assignment_id: 3,
+    submission: {
+      submitted_at: "2023-01-25",
+      score: 450,
+    },
+  }
 ];
 
 /***
